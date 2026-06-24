@@ -8,14 +8,15 @@ def get_signal(ticker):
     gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
     loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
     rs = gain / loss
-    rsi = 100 - (100 / (1 + rs))
+    rsi_series = 100 - (100 / (1 + rs))
     
-    current_price = df['Close'].iloc[-1]
-    avg_vol = df['Volume'].rolling(window=5).mean().iloc[-1]
-    curr_vol = df['Volume'].iloc[-1]
+    rsi_val = float(rsi_series.iloc[-1]) # इथे एरर येत होती, ती फिक्स केली
+    current_price = float(df['Close'].iloc[-1])
+    avg_vol = float(df['Volume'].rolling(window=5).mean().iloc[-1])
+    curr_vol = float(df['Volume'].iloc[-1])
     
-    if rsi.iloc[-1] < 35 and curr_vol > avg_vol:
-        return "BUY", float(current_price), float(rsi.iloc[-1])
-    elif rsi.iloc[-1] > 65:
-        return "SELL", float(current_price), float(rsi.iloc[-1])
-    return "HOLD", float(current_price), float(rsi.iloc[-1])
+    if rsi_val < 35 and curr_vol > avg_vol:
+        return "BUY", current_price, rsi_val
+    elif rsi_val > 65:
+        return "SELL", current_price, rsi_val
+    return "HOLD", current_price, rsi_val
