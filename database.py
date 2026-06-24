@@ -3,7 +3,6 @@ import pandas as pd
 
 def init_db():
     if 'trades_df' not in st.session_state:
-        # सुरुवातीला रिकामा डेटा फ्रेम
         st.session_state['trades_df'] = pd.DataFrame(columns=['date', 'stock', 'result', 'pnl'])
 
 def save_trade(stock, result, pnl):
