@@ -1,6 +1,10 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import streamlit as st
 from database import get_history
-
+# बाकीचा तुझा कोड जसा आहे तसा खाली राहू दे...
 st.title("📊 Performance & Analytics")
 df = get_history()
 
