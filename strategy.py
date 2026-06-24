@@ -3,9 +3,8 @@ import numpy as np
 
 def get_signal(ticker):
     try:
-        # डेटा फेंच करण्यासाठी '1mo' ऐवजी '5d' वापरले आहे जे फास्ट काम करेल
-        df = yf.download(ticker, period="5d", interval="1h", progress=False)
-        
+        df = yf.download(ticker, period="1mo", interval="1d", progress=False)
+
         if df.empty or len(df) < 14:
             return "NO_DATA", 0.0, 0.0
         
