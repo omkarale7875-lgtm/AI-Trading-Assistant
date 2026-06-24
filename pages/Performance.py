@@ -1,22 +1,17 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import streamlit as st
 from database import get_history
-# बाकीचा तुझा कोड जसा आहे तसा खाली राहू दे...
-st.title("📊 Performance & Analytics")
+
+st.title("🏆 TOP 10 PROFITABLE STOCKS")
 df = get_history()
 
 if not df.empty:
-    wins = len(df[df['result'] == 'PROFIT'])
-    total = len(df)
-    accuracy = (wins / total) * 100
+    # फक्त प्रॉफिट वाले ट्रेड्स फिल्टर करणे
+    profit_df = df[df['result'] == 'PROFIT']
     
-    col1, col2 = st.columns(2)
-    col1.metric("Total Accuracy", f"{accuracy:.2f}%")
-    col2.metric("Total Trades", total)
+    # स्टॉकनुसार एकूण प्रॉफिटची बेरीज
+    top_stocks = profit_df.groupby('stock')['pnl'].sum().sort_values(ascending=False).head(10)
     
-    st.dataframe(df.style.background_gradient(subset=['pnl'], cmap='RdYlGn'))
+    st.write("### तुझ्या स्ट्रॅटेजीनुसार टॉप १० परफॉर्मर्स:")
+    st.table(top_stocks)
 else:
-    st.info("No data yet!")
+    st.info("अजून पुरेसा डेटा नाही. काही ट्रेड्स लॉग कर, मग मी तुला टॉप १० लिस्ट देईन.")
